@@ -12,6 +12,7 @@ const ChartJSNodeCanvas  = require("quickchart-js");
 const cron = require("node-cron");
 const fs = require("fs");
 const readline = require("readline");
+const QuickChart = require("quickchart-js");
 
 const app = express();
 app.use(express.json());
@@ -683,9 +684,14 @@ async function createCharts(userProgress, userId) {
         let statusData = await statusResponse.json();
 
         // Render the new rating comparison chart
-        let ratingComparisonChart = await chartJSNodeCanvas.renderToBuffer(
-            ratingComparisonConfig
+
+        let ratingComparisonChart = new QuickChart();
+
+        ratingComparisonChart.setConfig(
+             JSON.stringify(ratingComparisonConfig)
         );
+
+        await ratingComparisonChart.toFile("ratingComparisonChart.png");
 
         let acceptedCountMap = {};
         let wrongCountMap = {};
@@ -1695,68 +1701,162 @@ async function createCharts(userProgress, userId) {
             },
         };
 
-        const contestChart = await chartJSNodeCanvas.renderToBuffer(contestConfig);
-        const practiceChart = await chartJSNodeCanvas.renderToBuffer(
-            practiceConfig
-        );
-        const averageRatingChart = await chartJSNodeCanvas.renderToBuffer(
-            averageRatingConfig
-        );
-        const problemTypeChart = await chartJSNodeCanvas.renderToBuffer(
-            problemTypeConfig
+        let contestChart = new QuickChart();
+
+        await contestChart.setConfig(JSON.stringify(contestConfig));
+        await contestChart.toFile("ContestChart.png");
+
+        let practiceChart = new QuickChart();
+
+        practiceChart.setConfig(
+            JSON.stringify(practiceConfig)
         );
 
-        const problemTypeChart1 = await chartJSNodeCanvas.renderToBuffer(
-            problemTypeConfig1
+        await practiceChart.toFile("PracticeChart.png");
+
+        let averageRatingChart = new QuickChart();
+
+        averageRatingChart.setConfig(
+            JSON.stringify(averageRatingConfig)
         );
 
-        const submissionsComparisonChart = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig
+        await averageRatingChart.toFile("AverageRatingChart.png");
+
+        let problemTypeChart = new QuickChart();
+
+        problemTypeChart.setConfig(
+            JSON.stringify(problemTypeConfig)
         );
 
-        const submissionsComparisonChart1 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig1
+        await problemTypeChart.toFile("ProblemTypeChart.png");
+
+        let problemTypeChart1 = new QuickChart();
+        
+        problemTypeChart1.setConfig(
+            JSON.stringify(problemTypeConfig1)
+        );
+        await problemTypeChart1.toFile("ProblemTypeChart1.png");
+
+        let submissionsComparisonChart = new QuickChart();
+
+        submissionsComparisonChart.setConfig(
+            JSON.stringify(submissionsComparisonConfig)
         );
 
-        const submissionsComparisonChart2 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig2
+        await submissionsComparisonChart.toFile("submissionsComparisonChart.png");
+
+        let submissionsComparisonChart1 = new QuickChart();
+        
+        submissionsComparisonChart1.setConfig(
+            JSON.stringify(submissionsComparisonConfig1)
         );
 
-        const submissionsComparisonChart3 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig3
+        submissionsComparisonChart1.toFile("submissionsComparisonChart1.png");
+
+        let submissionsComparisonChart2 = new QuickChart();
+
+        await submissionsComparisonChart2.setConfig(
+            JSON.stringify(submissionsComparisonConfig2)
         );
 
-        const submissionsComparisonChart4 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig4
+        submissionsComparisonChart2.toFile("submissionsComparisonChart2.png");
+
+        let submissionsComparisonChart3 = new QuickChart();
+
+        submissionsComparisonChart3.setConfig(
+            JSON.stringify(submissionsComparisonConfig3)
         );
 
-        const submissionsComparisonChart5 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig5
+        await submissionsComparisonChart3.toFile("submissionsComparisonChart3.png");
+
+        let submissionsComparisonChart4 = new QuickChart();
+
+        submissionsComparisonChart4.setConfig(
+            JSON.stringify(submissionsComparisonConfig4)
         );
 
-        const submissionsComparisonChart6 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig6
+        await submissionsComparisonChart4.toFile("submissionsComparisonChart4.png");
+
+        let submissionsComparisonChart5 = new QuickChart();
+
+        submissionsComparisonChart5.setConfig(
+            JSON.stringify(submissionsComparisonConfig5)
         );
 
-        const submissionsComparisonChart7 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig7
+        await submissionsComparisonChart5.toFile("submissionsComparisonChart5.png");
+
+        let submissionsComparisonChart6 = new QuickChart();
+
+        submissionsComparisonChart6.setConfig(
+            JSON.stringify(submissionsComparisonConfig6)
         );
 
-        const submissionsComparisonChart8 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig8
+        await submissionsComparisonChart6.toFile("submissionsComparisonChart6.png");
+
+        let submissionsComparisonChart7 = new QuickChart();
+
+        submissionsComparisonChart7.setConfig(
+            JSON.stringify(submissionsComparisonConfig7)
         );
 
-        const submissionsComparisonChart9 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig9
+        await submissionsComparisonChart7.toFile("submissionsComparisonConfig7.png");
+
+        let submissionsComparisonChart8 = new QuickChart();
+
+        submissionsComparisonChart8.setConfig(
+            JSON.stringify(submissionsComparisonConfig8)
         );
 
-        const submissionsComparisonChart10 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig10
+        await submissionsComparisonChart8.toFile("submissionsComparisonChart8.png");
+
+        let submissionsComparisonChart9 = new QuickChart();
+
+        submissionsComparisonChart9.setConfig(
+            JSON.stringify(submissionsComparisonConfig9)
         );
 
-        const submissionsComparisonChart11 = await chartJSNodeCanvas.renderToBuffer(
-            submissionsComparisonConfig11
+        await submissionsComparisonChart9.toFile("submissionsComparisonChart9.png");
+
+        let submissionsComparisonChart10 = new QuickChart();
+
+        submissionsComparisonChart10.setConfig(
+            JSON.stringify(submissionsComparisonConfig10)
         );
+
+        await submissionsComparisonChart10.toFile("submissionsComparisonChart10.png");
+
+        let submissionsComparisonChart11 = new QuickChart();
+
+        submissionsComparisonChart11.setConfig(
+            JSON.stringify(submissionsComparisonConfig11)
+        );
+
+        await submissionsComparisonChart11.toFile("submissionsComparisonChart11.png");
+
+        console.log("type of submissionComparisonChart11 :- " + (typeof submissionsComparisonChart11 === undefined) );
+
+        await contestChart.toBinary();
+        await practiceChart.toBinary();
+        await averageRatingChart.toBinary();
+        await problemTypeChart.toBinary();
+        await problemTypeChart1.toBinary();
+        await ratingComparisonChart.toBinary();
+        await ratingComparisonChart.toBinary();
+        await submissionsComparisonChart.toBinary();
+        await submissionsComparisonChart1.toBinary();
+        await submissionsComparisonChart2.toBinary();
+        await submissionsComparisonChart3.toBinary();
+        await submissionsComparisonChart3.toBinary();
+        await submissionsComparisonChart4.toBinary();
+        await submissionsComparisonChart4.toBinary();
+        await submissionsComparisonChart5.toBinary();
+        await submissionsComparisonChart5.toBinary();
+        await submissionsComparisonChart6.toBinary();
+        await submissionsComparisonChart7.toBinary();
+        await submissionsComparisonChart8.toBinary();
+        await submissionsComparisonChart9.toBinary();
+        await submissionsComparisonChart10.toBinary();
+        await submissionsComparisonChart11.toBinary();
 
         return {
             contestChart,
@@ -1778,7 +1878,11 @@ async function createCharts(userProgress, userId) {
             submissionsComparisonChart10,
             submissionsComparisonChart11,
         };
-    } catch (error40) {}
+    } catch (error40) {
+
+        console.log("error is creating chart :- " + error40);
+
+    }
 }
 
 // Report sending function
@@ -1919,100 +2023,118 @@ async function sendReport(userId, email) {
             attachments: [
                 /*{
                 filename: "contest-progress-chart.png",
-                content: contestChart,
+                content: await contestChart.toBinary(),
+                contentType: 'image/png',
                 cid: "contestChart",
               },*/
                 {
                     filename: "practice-progress-chart.png",
-                    content: practiceChart,
+                    content: await practiceChart.toBinary(),
+                    contentType: 'image/png',
                     cid: "practiceChart",
                 },
                 /*{
                 filename: "average-rating-chart.png",
                 content: averageRatingChart,
+                contentType: 'image/png',
                 cid: "averageRatingChart",
               },*/
                 {
                     filename: "problems-solved-by-type.png",
-                    content: problemTypeChart,
+                    content: await problemTypeChart.toBinary(),
+                    contentType: 'image/png',
                     cid: "problemTypeChart",
                 },
                 /*{
                 filename: "problems-solved-by-type-in-practice.png",
-                content: problemTypeChart1,
+                content: await problemTypeChart1.toBinary(),
+                contentType: 'image/png',
                 cid: "problemTypeChart1",
               },*/
                 /*{
                 filename: "problems-solved-by-rating-in-contest-and-practice.png",
-                content: ratingComparisonChart,
+                content: await ratingComparisonChart.toBinary(),
+                contentType: 'image/png',
                 cid: "ratingComparisonChart",
               },*/
                 /*{
                 filename: "submission-comparison-chart.png",
-                content: submissionsComparisonChart,
+                content: await submissionsComparisonChart.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart",
               },*/
                 /*{
                 filename: "submission-comparison-practice-chart.png",
-                content: submissionsComparisonChart1,
+                content: await submissionsComparisonChart1.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart1",
               },*/
                 /*{
                 filename: "submission-comparison-by-problemTags-on-contest-chart.png",
-                content: submissionsComparisonChart2,
+                content: await submissionsComparisonChart2.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart2",
               },*/
                 /*{
                 filename: "submission-comparison-by-problemTags-on-practice-chart.png",
-                content: submissionsComparisonChart3,
+                content: await submissionsComparisonChart3.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart3",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemTags-on-contest-chart-for-present-year.png",
-                content: submissionsComparisonChart4,
+                content: await submissionsComparisonChart4.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart4",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemTags-on-contest-chart-for-past-year.png",
-                content: submissionsComparisonChart5,
+                content: await submissionsComparisonChart5.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart5",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemRatings-on-contest-chart-for-present-year.png",
-                content: submissionsComparisonChart6,
+                content: await submissionsComparisonChart6.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart6",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemRatings-on-contest-chart-for-past-year.png",
-                content: submissionsComparisonChart7,
+                content: await submissionsComparisonChart7.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart7",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemRatings-on-practice-chart-for-present-year.png",
-                content: submissionsComparisonChart8,
+                content: await submissionsComparisonChart8.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart8",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemRatings-on-practice-chart-for-past-year.png",
-                content: submissionsComparisonChart9,
+                content: await submissionsComparisonChart9.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart9",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemTags-on-practice-chart-for-present-year.png",
-                content: submissionsComparisonChart10,
+                content: await submissionsComparisonChart10.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart10",
               },*/
                 /*{
                 filename:
                   "submission-comparison-by-problemTags-on-practice-chart-for-past-year.png",
-                content: submissionsComparisonChart11,
+                content: await submissionsComparisonChart11.toBinary(),
+                contentType: 'image/png',
                 cid: "submissionsComparisonChart11",
               },*/
             ],
@@ -2032,7 +2154,11 @@ async function sendReport(userId, email) {
                 );
             }
         });
-    } catch (error67) {}
+    } catch (error67) {
+
+        console.log("mail doesn't send for " + userId + "\nand the wrong is :- " + error67);
+
+    }
 }
 
 async function findUsers() {
@@ -2080,16 +2206,16 @@ async function findUsers() {
             "userData/" + user.handle + ".txt",
             `UserId: ${user.handle}\nLastSent: ${currentTime}`
           );
-
+diff <= 1 ||
 
         users[i].lastSentTime = Date.now();*/
 
         try {
-            if (currentTime - users[i].lastSentTime >= SEVEN_DAYS) {
+            if (diff <= 1 || currentTime - users[i].lastSentTime >= SEVEN_DAYS) {
                 //users[i].lastSentTime -= SEVEN_DAYS * 2;
 
                 //setInterval(() => {
-                trackUser(user.handle, user.email);
+                await trackUser(user.handle, user.email);
                 //}, 10000);
 
                 fs.writeFileSync(
@@ -2166,4 +2292,6 @@ cron.schedule(
 app.listen(3000, () => {
     console.log("Server is running on port 3000"); // সার্ভার শুরু হলে লগ করা হচ্ছে
     //findUsers();
+    //trackUser("SH4F4R", "shariatullahpathan02@gmail.com");
+    //trackUser("amit_roy", "arponamitroy012@gmail.com");
 });

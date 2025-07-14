@@ -2295,7 +2295,7 @@ cron.schedule(
 // সার্ভার শুরু করা হচ্ছে
 app.listen(3000, () => {
     console.log("Server is running on port 3000"); // সার্ভার শুরু হলে লগ করা হচ্ছে
-    findUsers();
+    //findUsers();
     //trackUser("SH4F4R", "shariatullahpathan02@gmail.com");
     //trackUser("amit_roy", "arponamitroy012@gmail.com");
 });

@@ -23,3 +23,5 @@ jobs:
 
       - name: Run CF Tracking Script
         run: node index.js     
+        env:
+          MONGO_URI: mongodb+srv://cftracker:092406030124@cluster0.f7vok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

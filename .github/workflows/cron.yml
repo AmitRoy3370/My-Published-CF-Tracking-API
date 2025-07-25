@@ -2,8 +2,8 @@ name: Daily Chart Email Sender
 
 on:
   schedule:
-    - cron: '0 14 * * *'  # প্রতি দিন দুপুর ৮টা (বাংলাদেশ টাইম: UTC+6 → UTC 14)
-  workflow_dispatch:       # ম্যানুয়ালি রান করার অপশন
+    - cron: '0 14 * * *'  
+  workflow_dispatch:       
 
 jobs:
   build:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -27,3 +29,11 @@ jobs:
           EMAIL_USER: shohoj@bijoy2.shop
           EMAIL_PASS: tzUTO3JFH0G1SEgp
           MONGO_URI: mongodb+srv://cftracker:092406030124@cluster0.f7vok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+      - name: Commit updated .txt files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.txt || true
+          git commit -m "Update .txt file(s) from scheduled run" || echo "No changes to commit"
+          git push

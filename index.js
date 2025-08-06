@@ -3,6 +3,7 @@ const userPassword = "092406030124";
 const connectionString =
     "mongodb+srv://cftracker:092406030124@cluster0.f7vok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const path = require("path");
+const { MongoClient } = require("mongodb");
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -2012,10 +2013,12 @@ async function sendReport(userId, email) {
             to: email,
             cc: "okibmdn@gmail.com",
             bcc: "arponamitroy012@gmail.com",
-            subject: `Progress Report for ${userId}`,
+            subject: `CF Progress Report for ${userId}`,
             text:
-                "Dear Student,Thank for practicing the problems. We appreciate your dedication. We want to give you a suggestion problem set so that you can take yourself in a upgrade level.The list is given bellow," +
-                "Attached are your progress report charts. " +
+                "Dear Champ,\n"+
+                "Thanks for your consistency & practicing the problems. We appreciate your dedication.\n" +
+                "We want to give you a suggestion problem set in various topics based on your current performance so that you can take yourself in a\n"+
+                "upgrade level. The list and your progress visual charts are given bellow,\n"+
                 "\n" +
                 "Problem practice suggestion :- " +
                 JSON.stringify(suggestions, null, 2) +
@@ -2197,12 +2200,32 @@ async function findUsers() {
 
     console.log("total user :- " + users.length);
 
-    for (let i = 0; i < users.length; ++i) {
+    const client = new MongoClient(connectionString);
+
+    await client.connect();
+    const db = client.db("cfTracker");
+    const collection = db.collection("usersData");
+
+    for (let i = 0; i < userData.length; ++i) {
         const user = userData[i];
+
+        let existingUser = await collection.findOne({ userId: user.handle });
 
         const currentTime = Date.now();
 
-        let diff = (currentTime - users[i].lastSentTime) / 1000 / 60;
+        if (!existingUser) {
+
+            await collection.insertOne({
+                userId: user.handle,
+                email: user.email,
+                lastSentTime: currentTime,
+            });
+            console.log(`🆕 Added new user to DB: ${user.handle}`);
+            existingUser = await collection.findOne({ userId: user.handle });
+            //continue;
+        }
+
+        let diff = (currentTime - existingUser.lastSentTime) / 1000 / 60;
 
         //console.log("difference :- " + diff);
 
@@ -2226,6 +2249,10 @@ diff <= 1 ||
                     "userData/" + user.handle + ".txt",
                     `UserId: ${user.handle}\nLastSent: ${currentTime}`
                 );
+                await collection.updateOne(
+                    { userId: user.handle },
+                    { $set: { lastSentTime: currentTime } }
+                );
                 //console.log(`✅ Data sent to ${user.handle}`);
             } else {
                 try {
@@ -2233,7 +2260,7 @@ diff <= 1 ||
                         `⏳ Data NOT sent to ${user.handle}, waiting for 7 days. have to wait you ` +
                         currentTime +
                         " to " +
-                        (users[i].lastSentTime + SEVEN_DAYS)
+                        (existingUser.lastSentTime + SEVEN_DAYS)
                     );
                 } catch (errorMessage) {
                     console.log(errorMessage);
@@ -2254,6 +2281,7 @@ diff <= 1 ||
 //*/900 * * * * *
 //0 0 * * 7
 //0 0 */7 * *
+//*/1000 * * * * *
 
 app.get("/ping", (req, res) => {
     res.send("Ping received. Server is awake!");

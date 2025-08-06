@@ -2238,7 +2238,7 @@ diff <= 1 ||
         users[i].lastSentTime = Date.now();*/
 
         try {
-            if (diff <= 1 || currentTime - users[i].lastSentTime >= SEVEN_DAYS) {
+            if (diff <= 1 || currentTime - existingUser.lastSentTime >= SEVEN_DAYS) {
                 //users[i].lastSentTime -= SEVEN_DAYS * 2;
 
                 //setInterval(() => {

@@ -28,59 +28,9 @@ jobs:
         id: run-script
         run: node index.js
         env:
-          EMAIL_USER: name: Daily Chart Email Sender
-
-on:
-  schedule:
-    - cron: '0 14 * * *'  # 8 PM Bangladesh Time (UTC+6)
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Needed to get full git history for proper diffs
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci  # Clean install for consistency
-
-      - name: Run the chart email script
-        id: run-script
-        run: node index.js
-        env:
           EMAIL_USER: shohoj@bijoy2.shop
           EMAIL_PASS: tzUTO3JFH0G1SEgp
           MONGO_URI: mongodb+srv://cftracker:092406030124@cluster0.f7vok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-
-      - name: Check for file changes
-        id: check-changes
-        run: |
-          git add userData/*.txt
-          if git diff --quiet --cached; then
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
-          else
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit and push changes
-        if: steps.check-changes.outputs.changes_detected == 'true'
-        run: |
-          git config --global user.name 'Automated Cron Job'
-          git config --global user.email 'actions@users.noreply.github.com'
-          git commit -m "Auto-update: Update userData files $(date +'%Y-%m-%d %H:%M')"
-          git push origin HEAD:main
-          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-          MONGO_URI: ${{ secrets.MONGO_URI }}
 
       - name: Check for file changes
         id: check-changes

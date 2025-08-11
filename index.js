@@ -2011,7 +2011,7 @@ async function sendReport(userId, email) {
         const mailOptions = {
             from: "shohoj@bijoy2.shop",
             to: email,
-            cc: "okibmdn@gmail.com",
+            //cc: "okibmdn@gmail.com",
             bcc: "arponamitroy012@gmail.com",
             subject: `CF Progress Report for ${userId}`,
             text:

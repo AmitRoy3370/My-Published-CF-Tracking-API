@@ -2287,6 +2287,22 @@ app.get("/ping", (req, res) => {
     res.send("Ping received. Server is awake!");
 });
 
+app.get("/sendMail", (req, res) => {
+
+    try {
+
+        findUsers().then(r => console.log("Mail sending process is running...."));
+
+        res.send("Mail sending process is running....");
+
+    } catch(error) {
+
+        console.log(`error is ${error}`);
+
+    }
+
+});
+
 // ক্রন কাজ সেট আপ করা হচ্ছে
 cron.schedule(
     "0 20 * * *",

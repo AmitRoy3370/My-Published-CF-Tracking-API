@@ -1,7 +1,8 @@
-const userName = "cftracker";
-const userPassword = "092406030124";
+require('dotenv').config();
+const userName = process.env.userName;
+const userPassword = process.env.userPassword;
 const connectionString =
-    "mongodb+srv://cftracker:092406030124@cluster0.f7vok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    process.env.connectionString;
 const path = require("path");
 const { MongoClient } = require("mongodb");
 const axios = require('axios');
@@ -21,7 +22,7 @@ app.use(express.json());
 let SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 let SIX_MINUITES = 6 * 60 * 1000;
 let storageFolder = path.join(__dirname, "userData");
-let key = "xsmtpsib-b4faeecb09e97f79f4d8e8c5fc8360255065ec5bbf7ecf925697f1b736175bad-WKlG0VPpJzbEe1dk";
+let key = process.env.key;
 
 if (!fs.existsSync(storageFolder)) {
     fs.mkdirSync(storageFolder);

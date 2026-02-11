@@ -2344,7 +2344,7 @@ app.get("/sendMail", (req, res) => {
 
 // ক্রন কাজ সেট আপ করা হচ্ছে
 cron.schedule(
-    "*/300 * * * * *",
+    "0 20 * * *",
     async () => {
         console.log("Running the job");
 

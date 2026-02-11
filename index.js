@@ -4,7 +4,7 @@ const connectionString =
     "mongodb+srv://cftracker:092406030124@cluster0.f7vok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const path = require("path");
 const { MongoClient } = require("mongodb");
-
+const axios = require('axios');
 const express = require("express");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
@@ -21,6 +21,7 @@ app.use(express.json());
 let SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 let SIX_MINUITES = 6 * 60 * 1000;
 let storageFolder = path.join(__dirname, "userData");
+let key = "xsmtpsib-b4faeecb09e97f79f4d8e8c5fc8360255065ec5bbf7ecf925697f1b736175bad-WKlG0VPpJzbEe1dk";
 
 if (!fs.existsSync(storageFolder)) {
     fs.mkdirSync(storageFolder);
@@ -53,6 +54,7 @@ mongoose
     .connect(connectionString, {})
     .then(() => {
         console.log("Connected with MongoDB database successfully");
+        //send();
     })
     .catch((err) => {
         console.error("Failed to connect with MongoDB: ", err);
@@ -702,12 +704,12 @@ async function createCharts(userProgress, userId) {
         userProgress.contests.forEach((contest) => {
             //console.log("contestId :- " + contest.contestId);
 
-            if (!contest.contestId || contest.contestId == undefined) {
+            if (!contest.contestId || contest.contestId === undefined) {
                 console.warn("Contest missing contestId:", contest);
             } else {
                 try {
                     contestIdSet.add(
-                        contest.contestId != undefined
+                        contest.contestId !== undefined
                             ? contest.contestId.toString().trim()
                             : "no contest"
                     );
@@ -781,7 +783,7 @@ async function createCharts(userProgress, userId) {
         statusData.result.forEach((submission) => {
             try {
                 let contestId =
-                    submission.contestId != undefined
+                    submission.contestId !== undefined
                         ? submission.contestId.toString().trim()
                         : "No Contest";
                 let rating = submission.problem.rating || 0;
@@ -792,11 +794,11 @@ async function createCharts(userProgress, userId) {
                 let submissionDate = new Date(submission.creationTimeSeconds * 1000);
                 let year = submissionDate.getFullYear();
 
-                if (year == currentYear) {
+                if (year === currentYear) {
                     let tagsString = Object.values(tags).join(","); // Join values into a string
                     let tagsArray = tagsString.split(",").map((tag) => tag.trim()); // Split by comma and trim whitespace
 
-                    if (submission.verdict == "OK") {
+                    if (submission.verdict === "OK") {
                         tagsArray.forEach((problemTag) => {
                             presentYearTagOnPractice[problemTag] =
                                 (presentYearTagOnPractice[problemTag] || 0) + 1;
@@ -805,7 +807,7 @@ async function createCharts(userProgress, userId) {
 
                         presentYearRatingOnPractice[rating] =
                             (presentYearRatingOnPractice[rating] || 0) + 1;
-                    } else if (submission.verdict == "WRONG_ANSWER") {
+                    } else if (submission.verdict === "WRONG_ANSWER") {
                         tagsArray.forEach((problemTag) => {
                             presentYearTagOnPracticeForWrong[problemTag] =
                                 (presentYearTagOnPracticeForWrong[problemTag] || 0) + 1;
@@ -815,11 +817,11 @@ async function createCharts(userProgress, userId) {
                         presentYearRatingOnPracticeForWrong[rating] =
                             (presentYearRatingOnPracticeForWrong[rating] || 0) + 1;
                     }
-                } else if (year == previousYear) {
+                } else if (year === previousYear) {
                     let tagsString = Object.values(tags).join(","); // Join values into a string
                     let tagsArray = tagsString.split(",").map((tag) => tag.trim()); // Split by comma and trim whitespace
 
-                    if (submission.verdict == "OK") {
+                    if (submission.verdict === "OK") {
                         tagsArray.forEach((problemTag) => {
                             pastYearTagOnPractice[problemTag] =
                                 (pastYearTagOnPractice[problemTag] || 0) + 1;
@@ -828,7 +830,7 @@ async function createCharts(userProgress, userId) {
 
                         pastYearRatingOnPractice[rating] =
                             (pastYearRatingOnPractice[rating] || 0) + 1;
-                    } else if (submission.verdict == "WRONG_ANSWER") {
+                    } else if (submission.verdict === "WRONG_ANSWER") {
                         tagsArray.forEach((problemTag) => {
                             pastYearTagOnPracticeForWrong[problemTag] =
                                 (pastYearTagOnPracticeForWrong[problemTag] || 0) + 1;
@@ -854,13 +856,13 @@ async function createCharts(userProgress, userId) {
 
                     //console.log('tags array :- ' + tagsArray.length);
 
-                    if (submission.verdict == "OK") {
+                    if (submission.verdict === "OK") {
                         tagsArray.forEach((problemTag) => {
                             acceptedProblemTag[problemTag] =
                                 (acceptedProblemTag[problemTag] || 0) + 1;
                             //console.log("problem tag :- " + problemTag);
                         });
-                    } else if (submission.verdict == "WRONG_ANSWER") {
+                    } else if (submission.verdict === "WRONG_ANSWER") {
                         tagsArray.forEach((problemTag) => {
                             wrongProblemTag[problemTag] =
                                 (wrongProblemTag[problemTag] || 0) + 1;
@@ -868,7 +870,7 @@ async function createCharts(userProgress, userId) {
                     }
                 } catch (e1) {}
 
-                if (submission.verdict == "WRONG_ANSWER") {
+                if (submission.verdict === "WRONG_ANSWER") {
                     wrongPracticeCountMap[rating] =
                         (wrongPracticeCountMap[rating] || 0) + 1;
                 }
@@ -881,11 +883,11 @@ async function createCharts(userProgress, userId) {
                     let tagsString = Object.values(tags).join(","); // Join values into a string
                     let tagsArray = tagsString.split(",").map((tag) => tag.trim()); // Split by comma and trim whitespace
 
-                    if (year == currentYear) {
+                    if (year === currentYear) {
                         let tagsString = Object.values(tags).join(","); // Join values into a string
                         let tagsArray = tagsString.split(",").map((tag) => tag.trim()); // Split by comma and trim whitespace
 
-                        if (submission.verdict == "OK") {
+                        if (submission.verdict === "OK") {
                             tagsArray.forEach((problemTag) => {
                                 presentYearTagOnContest[problemTag] =
                                     (presentYearTagOnContest[problemTag] || 0) + 1;
@@ -894,7 +896,7 @@ async function createCharts(userProgress, userId) {
 
                             presentYearRatingOnContest[rating] =
                                 (presentYearRatingOnContest[rating] || 0) + 1;
-                        } else if (submission.verdict == "WRONG_ANSWER") {
+                        } else if (submission.verdict === "WRONG_ANSWER") {
                             tagsArray.forEach((problemTag) => {
                                 presentYearTagOnContestForWrong[problemTag] =
                                     (presentYearTagOnContestForWrong[problemTag] || 0) + 1;
@@ -904,11 +906,11 @@ async function createCharts(userProgress, userId) {
                             presentYearRatingOnContestForWrong[rating] =
                                 (presentYearRatingOnContestForWrong[rating] || 0) + 1;
                         }
-                    } else if (year == previousYear) {
+                    } else if (year === previousYear) {
                         let tagsString = Object.values(tags).join(","); // Join values into a string
                         let tagsArray = tagsString.split(",").map((tag) => tag.trim()); // Split by comma and trim whitespace
 
-                        if (submission.verdict == "OK") {
+                        if (submission.verdict === "OK") {
                             tagsArray.forEach((problemTag) => {
                                 pastYearTagOnContest[problemTag] =
                                     (pastYearTagOnContest[problemTag] || 0) + 1;
@@ -917,7 +919,7 @@ async function createCharts(userProgress, userId) {
 
                             pastYearRatingOnContest[rating] =
                                 (pastYearRatingOnContest[rating] || 0) + 1;
-                        } else if (submission.verdict == "WRONG_ANSWER") {
+                        } else if (submission.verdict === "WRONG_ANSWER") {
                             tagsArray.forEach((problemTag) => {
                                 pastYearTagOnContestForWrong[problemTag] =
                                     (pastYearTagOnContestForWrong[problemTag] || 0) + 1;
@@ -929,12 +931,12 @@ async function createCharts(userProgress, userId) {
                         }
                     }
 
-                    if (submission.verdict == "OK") {
+                    if (submission.verdict === "OK") {
                         tagsArray.forEach((problemTag) => {
                             onContestAcceptedProblemTag[problemTag] =
                                 (onContestAcceptedProblemTag[problemTag] || 0) + 1;
                         });
-                    } else if (submission.verdict == "WRONG_ANSWER") {
+                    } else if (submission.verdict === "WRONG_ANSWER") {
                         tagsArray.forEach((problemTag) => {
                             onContestWrongAnswerProblemTag[problemTag] =
                                 (onContestWrongAnswerProblemTag[problemTag] || 0) + 1;
@@ -2143,7 +2145,7 @@ async function sendReport(userId, email) {
             ],
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
+        /*transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log("sending mail error ;- " + error);
             } else {
@@ -2156,7 +2158,43 @@ async function sendReport(userId, email) {
                     `UserId: ${userId}\nLastSent: ${Date.now()}`
                 );
             }
-        });
+        });*/
+
+        const response = await axios.post(
+            "https://api.brevo.com/v3/smtp/email",
+            mailOptions,
+            {
+                headers: {
+                    "api-key": key,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        if(response.status === 200) {
+
+            fs.writeFileSync(
+                "userData/" + userId + ".txt",
+                `UserId: ${userId}\nLastSent: ${Date.now()}`
+            );
+
+            const client = new MongoClient(connectionString);
+
+            await client.connect();
+
+            const db = client.db("cfTracker");
+
+            const collection = db.collection("usersData");
+
+            const currentTime = Date.now();
+
+            await collection.updateOne(
+                { userId: userId },
+                { $set: { lastSentTime: currentTime } }
+            );
+
+        }
+
     } catch (error67) {
 
         console.log("mail doesn't send for " + userId + "\nand the wrong is :- " + error67);
@@ -2245,14 +2283,14 @@ diff <= 1 ||
                 await trackUser(user.handle, user.email);
                 //}, 10000);
 
-                fs.writeFileSync(
+                /*fs.writeFileSync(
                     "userData/" + user.handle + ".txt",
                     `UserId: ${user.handle}\nLastSent: ${currentTime}`
                 );
                 await collection.updateOne(
                     { userId: user.handle },
                     { $set: { lastSentTime: currentTime } }
-                );
+                );*/
                 //console.log(`✅ Data sent to ${user.handle}`);
             } else {
                 try {
@@ -2305,7 +2343,7 @@ app.get("/sendMail", (req, res) => {
 
 // ক্রন কাজ সেট আপ করা হচ্ছে
 cron.schedule(
-    "0 20 * * *",
+    "*/300 * * * * *",
     async () => {
         console.log("Running the job");
 
@@ -2336,10 +2374,28 @@ cron.schedule(
     }
 );
 
+async function send() {
+
+    //trackUser("SH4F4R", "shariatullahpathan02@gmail.com");
+    //trackUser("amit_roy", "arponamitroy012@gmail.com");
+    //await trackUser('Hasan__Zia', 'syedhasan.cp@gmail.com');
+    //await trackUser('baishakhmahfiz', 'mahfizrahmanbaishakh@gmail.com');
+    //await trackUser('Shushikta_X', 'nshushikta@gmail.com');
+    //await trackUser('sayem.shuvo999', 'sayem.shuvo999@gmail.com');
+    //await trackUser('abidaisratjahan64', 'abidaisratjahan64@gmail.com');
+
+}
+
 // সার্ভার শুরু করা হচ্ছে
 app.listen(3000, () => {
     console.log("Server is running on port 3000"); // সার্ভার শুরু হলে লগ করা হচ্ছে
-    //findUsers();
+    findUsers();
     //trackUser("SH4F4R", "shariatullahpathan02@gmail.com");
     //trackUser("amit_roy", "arponamitroy012@gmail.com");
+    //trackUser('Hasan__Zia', 'syedhasan.cp@gmail.com');
+    //trackUser('baishakhmahfiz', 'mahfizrahmanbaishakh@gmail.com');
+    //trackUser('Shushikta_X', 'nshushikta@gmail.com');
+    //trackUser('sayem.shuvo999', 'sayem.shuvo999@gmail.com');
+    //trackUser('abidaisratjahan64', 'abidaisratjahan64@gmail.com');
+
 });
